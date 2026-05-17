@@ -142,8 +142,8 @@ The browser renderer emits SVG:
 
 - `viewBox` is derived from `cols * cellwidth` and `rows * cellheight`;
 - `preserveAspectRatio="xMidYMid meet"` keeps the art proportional;
-- block and shade glyphs are drawn as SVG primitives;
-- box drawing and other glyphs render as fixed terminal-cell SVG text.
+- block, shade, and common box drawing glyphs are drawn as SVG primitives;
+- other glyphs render as fixed terminal-cell SVG text.
 
 ## Roadmap
 

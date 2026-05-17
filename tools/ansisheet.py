@@ -180,7 +180,7 @@ def render_svg(frame: list[list[Cell]], cell_w: int = 10, cell_h: int = 20) -> s
     height = rows * cell_h
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
-        'preserveAspectRatio="xMidYMid meet" role="img">'
+        'preserveAspectRatio="xMidYMid meet" role="img" shape-rendering="crispEdges">'
     ]
     for y, row in enumerate(frame):
         for x, cell in enumerate(row):
@@ -195,6 +195,9 @@ def render_svg(frame: list[list[Cell]], cell_w: int = 10, cell_h: int = 20) -> s
 def glyph(ch: str, x: int, y: int, w: int, h: int, fill: str) -> str:
     if ch == "█":
         return rect(x, y, w, h, fill)
+    box = box_drawing_glyph(ch, x, y, w, h, fill)
+    if box:
+        return box
     cell_fit = f' textLength="{w:g}" lengthAdjust="spacingAndGlyphs"' if is_box_drawing(ch) else ""
     return (
         f'<text x="{x + w / 2:g}" y="{y + h / 2:g}" fill="{html.escape(fill)}" '
@@ -205,6 +208,68 @@ def glyph(ch: str, x: int, y: int, w: int, h: int, fill: str) -> str:
 
 def rect(x: float, y: float, w: float, h: float, fill: str) -> str:
     return f'<rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" fill="{html.escape(fill)}"/>'
+
+
+def box_drawing_glyph(ch: str, x: int, y: int, w: int, h: int, fill: str) -> str:
+    thin = max(1, min(w, h) * 0.08)
+    single_x = w / 2
+    single_y = h / 2
+    double_x1 = w * 0.38
+    double_x2 = w * 0.62
+    double_y1 = h * 0.42
+    double_y2 = h * 0.58
+
+    def h_line(x1: float, x2: float, yy: float) -> str:
+        return rect(x + x1, y + yy - thin / 2, x2 - x1, thin, fill)
+
+    def v_line(xx: float, y1: float, y2: float) -> str:
+        return rect(x + xx - thin / 2, y + y1, thin, y2 - y1, fill)
+
+    if ch in {"─", "━"}:
+        return h_line(0, w, single_y)
+    if ch in {"│", "┃"}:
+        return v_line(single_x, 0, h)
+    if ch == "┌":
+        return h_line(single_x, w, single_y) + v_line(single_x, single_y, h)
+    if ch == "┐":
+        return h_line(0, single_x, single_y) + v_line(single_x, single_y, h)
+    if ch == "└":
+        return h_line(single_x, w, single_y) + v_line(single_x, 0, single_y)
+    if ch == "┘":
+        return h_line(0, single_x, single_y) + v_line(single_x, 0, single_y)
+    if ch == "═":
+        return h_line(0, w, double_y1) + h_line(0, w, double_y2)
+    if ch == "║":
+        return v_line(double_x1, 0, h) + v_line(double_x2, 0, h)
+    if ch == "╔":
+        return (
+            h_line(double_x1, w, double_y1)
+            + h_line(double_x2, w, double_y2)
+            + v_line(double_x1, double_y1, h)
+            + v_line(double_x2, double_y2, h)
+        )
+    if ch == "╗":
+        return (
+            h_line(0, double_x2, double_y1)
+            + h_line(0, double_x1, double_y2)
+            + v_line(double_x1, double_y2, h)
+            + v_line(double_x2, double_y1, h)
+        )
+    if ch == "╚":
+        return (
+            v_line(double_x1, 0, double_y2)
+            + v_line(double_x2, 0, double_y1)
+            + h_line(double_x1, w, double_y2)
+            + h_line(double_x2, w, double_y1)
+        )
+    if ch == "╝":
+        return (
+            v_line(double_x1, 0, double_y1)
+            + v_line(double_x2, 0, double_y2)
+            + h_line(0, double_x1, double_y1)
+            + h_line(0, double_x2, double_y2)
+        )
+    return ""
 
 
 def make_frame(cols: int, rows: int) -> list[list[Cell]]:
