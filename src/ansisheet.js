@@ -56,13 +56,13 @@ export class Ansisheet {
     this.lastTick = 0;
     this.loadQueued = false;
     this.rendering = false;
-    this.initialText = element.textContent.trim();
+    this.initialText = normalizeInlineText(element.textContent);
     this.inlineText = null;
   }
 
   queueLoad(readDom = false) {
     if (readDom) {
-      this.initialText = this.element.textContent.trim();
+      this.initialText = normalizeInlineText(this.element.textContent);
       this.inlineText = null;
     }
     if (this.loadQueued) {
@@ -286,6 +286,23 @@ function numberAttr(element, name) {
   }
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
+}
+
+function normalizeInlineText(text) {
+  // Spaces inside terminal art are cells. Only remove wrapper whitespace from HTML formatting.
+  const lines = String(text ?? "").replaceAll("\r\n", "\n").replaceAll("\r", "\n").split("\n");
+  while (lines.length && lines[0].trim() === "") {
+    lines.shift();
+  }
+  while (lines.length && lines[lines.length - 1].trim() === "") {
+    lines.pop();
+  }
+
+  const indents = lines
+    .filter((line) => line.trim() !== "")
+    .map((line) => line.match(/^[ \t]*/)[0].length);
+  const commonIndent = indents.length ? Math.min(...indents) : 0;
+  return lines.map((line) => line.slice(commonIndent)).join("\n");
 }
 
 function prefersReducedMotion() {
