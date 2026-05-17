@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ansisheet demo</title>
+    <script type="module" src="../src/ansisheet.js"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #101416;
+        color: #e8f0ec;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      main {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 32px 0 56px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(28px, 4vw, 52px);
+        line-height: 1;
+      }
+
+      p {
+        max-width: 720px;
+        color: #b9c7c0;
+      }
+
+      section {
+        margin-top: 28px;
+      }
+
+      ansisheet {
+        --ansisheet-bg: #020403;
+        --ansisheet-padding: 18px;
+        --ansisheet-radius: 6px;
+        border: 1px solid #22302a;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+        gap: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>ansisheet</h1>
+      <p>
+        Terminal-cell rendering for old ASCII banners and ANSI effects. Resize
+        the browser: the art scales as a sheet instead of reflowing as text.
+      </p>
+
+      <section>
+        <ansisheet id="banner" title="ansisheet banner">█████╗ ███╗   ██╗███████╗██╗
+██╔══██╗████╗  ██║██╔════╝██║
+███████║██╔██╗ ██║███████╗██║
+██╔══██║██║╚██╗██║╚════██║██║
+██║  ██║██║ ╚████║███████║██║
+╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝</ansisheet>
+      </section>
+
+      <section class="grid">
+        <ansisheet id="colors" title="ANSI color sample" cols="34"></ansisheet>
+        <ansisheet id="anim" title="Clear screen ANSI animation" cols="28" rows="6" autoplay fps="3"></ansisheet>
+      </section>
+    </main>
+
+    <script type="module">
+      document.querySelector("#colors").setAttribute(
+        "text",
+        "\x1b[32mGREEN\x1b[0m  \x1b[35mMAGENTA\x1b[0m\n\x1b[93mYELLOW\x1b[0m \x1b[96mCYAN\x1b[0m"
+      );
+
+      document.querySelector("#anim").setAttribute(
+        "text",
+        [
+          "\x1b[32m[=     ] loading\x1b[0m",
+          "\x1b[2J\x1b[33m[===   ] loading\x1b[0m",
+          "\x1b[2J\x1b[35m[===== ] loading\x1b[0m",
+          "\x1b[2J\x1b[32m[======] ready\x1b[0m",
+        ].join("")
+      );
+    </script>
+  </body>
+</html>
