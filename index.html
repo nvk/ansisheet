@@ -75,19 +75,21 @@
 
       .hero {
         position: relative;
-        min-height: 86svh;
+        min-height: clamp(600px, 82svh, 820px);
         overflow: hidden;
         display: grid;
-        align-items: end;
-        padding: 72px max(22px, 5vw) 48px;
+        align-content: center;
+        gap: clamp(34px, 6vw, 76px);
+        padding: clamp(54px, 7vw, 88px) max(22px, 5vw) clamp(48px, 7vw, 78px);
         border-bottom: 1px solid var(--line);
         background: #040605;
       }
 
       .hero-art {
-        position: absolute;
-        inset: 8vh -12vw auto -8vw;
-        opacity: 0.3;
+        position: relative;
+        z-index: 1;
+        width: min(1120px, 100%);
+        opacity: 0.58;
         filter: saturate(1.35);
         pointer-events: none;
       }
@@ -175,6 +177,17 @@
         color: var(--muted);
         font-size: 18px;
         line-height: 1.45;
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+
+      p code {
+        padding: 0 0.25em;
+        border: 1px solid rgba(72, 216, 255, 0.2);
+        background: #07100c;
+        color: var(--green);
       }
 
       .lab {
@@ -287,9 +300,19 @@
           grid-template-columns: 1fr;
         }
 
+        .hero {
+          min-height: auto;
+          align-content: start;
+        }
+
         .hero-art {
-          inset: 12vh -40vw auto -28vw;
-          opacity: 0.2;
+          opacity: 0.45;
+        }
+      }
+
+      @media (min-width: 861px) and (max-width: 1120px) {
+        .features {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
     </style>
@@ -318,7 +341,7 @@
           <p class="kicker">terminal art, web native</p>
           <h1>ansisheet</h1>
           <p>
-            Display FIGlet banners and ANSI effects as responsive SVG sheets.
+            Display FIGlet banners and simple ANSI effects as responsive SVG sheets.
             No Node. No npm. No build step. No full terminal emulator.
           </p>
           <div class="actions">
@@ -332,8 +355,8 @@
         <div class="section-head">
           <h2>Type terminal art. Watch it scale.</h2>
           <p>
-            This is a real `<ansisheet>` tag on the page. The source stays as
-            terminal cells; the output gets a stable SVG viewBox.
+            This is a real <code>&lt;ansisheet&gt;</code> tag on the page. The
+            source stays as terminal cells; the output gets a stable SVG viewBox.
           </p>
         </div>
         <div class="lab">
@@ -368,11 +391,11 @@
           </div>
           <div class="feature">
             <strong>ANSI aware</strong>
-            <p>Handle SGR color, cursor moves, and clear screen animation frames.</p>
+            <p>Handle SGR colors, cursor positioning, and clear screen frame capture.</p>
           </div>
           <div class="feature">
             <strong>No toolchain</strong>
-            <p>Ship one ESM file and optional Python helpers. Nothing to install.</p>
+            <p>Copy static ESM files and the optional Python helper. No package install.</p>
           </div>
         </div>
       </section>
