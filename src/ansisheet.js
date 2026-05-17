@@ -225,7 +225,9 @@ function observeAnsisheets() {
       const element = findAnsisheet(mutation.target);
       if (element) {
         const controller = controllers.get(element);
-        if (controller && !controller.rendering) {
+        if (controller && mutation.type === "attributes") {
+          controller.queueLoad(false);
+        } else if (controller && !controller.rendering) {
           controller.queueLoad(mutation.type === "childList" || mutation.type === "characterData");
         }
       }
