@@ -50,12 +50,11 @@ Write normal markup:
 
 ```html
 <ansisheet title="Project banner">
-██████╗ ███████╗██╗   ██╗
-██╔══██╗██╔════╝██║   ██║
-██║  ██║█████╗  ██║   ██║
-██║  ██║██╔══╝  ╚██╗ ██╔╝
-██████╔╝███████╗ ╚████╔╝
-╚═════╝ ╚══════╝  ╚═══╝
+████  █  █ ████ ████ ████
+█     █  █ █    █      ██
+████  ████ ███  ███    ██
+   █  █  █ █    █      ██
+████  █  █ ████ ████   ██
 </ansisheet>
 ```
 
@@ -133,8 +132,8 @@ The browser renderer emits SVG:
 
 - `viewBox` is derived from `cols * cellwidth` and `rows * cellheight`;
 - `preserveAspectRatio="xMidYMid meet"` keeps the art proportional;
-- block, shade, and common box drawing glyphs are drawn as SVG primitives;
-- other glyphs fall back to centered SVG text.
+- block and shade glyphs are drawn as SVG primitives;
+- box drawing and other glyphs render as fixed terminal-cell SVG text.
 
 ## Roadmap
 

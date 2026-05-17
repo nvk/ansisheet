@@ -45,28 +45,20 @@ export function renderFrameToSvg(frame, options = {}) {
 
 export function renderGlyph(ch, x, y, w, h, color, bold = false) {
   const fill = escapeAttr(color);
-  const primitive = primitiveGlyph(ch, x, y, w, h, fill);
+  const primitive = primitiveBlockGlyph(ch, x, y, w, h, fill);
   if (primitive) {
     return primitive;
   }
 
   const fontWeight = bold ? "700" : "400";
-  const fontSize = h * 0.82;
+  const fontSize = h * 0.86;
   const textX = x + w / 2;
-  const textY = y + h * 0.78;
-  return `<text x="${round(textX)}" y="${round(textY)}" fill="${fill}" font-family="${escapeAttr(DEFAULT_FONT)}" font-size="${round(fontSize)}" font-weight="${fontWeight}" text-anchor="middle">${escapeHtml(ch)}</text>`;
+  const textY = y + h / 2;
+  const cellFit = isBoxDrawing(ch) ? ` textLength="${round(w)}" lengthAdjust="spacingAndGlyphs"` : "";
+  return `<text x="${round(textX)}" y="${round(textY)}" fill="${fill}" font-family="${escapeAttr(DEFAULT_FONT)}" font-size="${round(fontSize)}" font-weight="${fontWeight}" text-anchor="middle" dominant-baseline="central"${cellFit}>${escapeHtml(ch)}</text>`;
 }
 
-function primitiveGlyph(ch, x, y, w, h, fill) {
-  const thin = Math.max(1, w * 0.12);
-  const thick = Math.max(1, w * 0.2);
-  const cx = x + w / 2;
-  const cy = y + h / 2;
-  const top = y + h * 0.32;
-  const bottom = y + h * 0.58;
-  const left = x + w * 0.32;
-  const right = x + w * 0.58;
-
+function primitiveBlockGlyph(ch, x, y, w, h, fill) {
   if (ch === "█") {
     return rect(x, y, w, h, fill);
   }
@@ -86,43 +78,32 @@ function primitiveGlyph(ch, x, y, w, h, fill) {
   if (ch === "▐") {
     return rect(x + w / 2, y, w / 2, h, fill);
   }
-  if (ch === "─" || ch === "━") {
-    return rect(x, cy - thin / 2, w, thin, fill);
-  }
-  if (ch === "│" || ch === "┃") {
-    return rect(cx - thin / 2, y, thin, h, fill);
-  }
-  if (ch === "═") {
-    return rect(x, top, w, thick, fill) + rect(x, bottom, w, thick, fill);
-  }
-  if (ch === "║") {
-    return rect(left, y, thick, h, fill) + rect(right, y, thick, h, fill);
-  }
-  if (ch === "┌") {
-    return rect(cx - thin / 2, cy, thin, h / 2, fill) + rect(cx, cy - thin / 2, w / 2, thin, fill);
-  }
-  if (ch === "┐") {
-    return rect(cx - thin / 2, cy, thin, h / 2, fill) + rect(x, cy - thin / 2, w / 2, thin, fill);
-  }
-  if (ch === "└") {
-    return rect(cx - thin / 2, y, thin, h / 2, fill) + rect(cx, cy - thin / 2, w / 2, thin, fill);
-  }
-  if (ch === "┘") {
-    return rect(cx - thin / 2, y, thin, h / 2, fill) + rect(x, cy - thin / 2, w / 2, thin, fill);
-  }
-  if (ch === "╔") {
-    return rect(right, bottom, thick, h - (bottom - y), fill) + rect(right, bottom, w - (right - x), thick, fill);
-  }
-  if (ch === "╗") {
-    return rect(left, bottom, thick, h - (bottom - y), fill) + rect(x, bottom, left - x + thick, thick, fill);
-  }
-  if (ch === "╚") {
-    return rect(right, y, thick, top - y + thick, fill) + rect(right, top, w - (right - x), thick, fill);
-  }
-  if (ch === "╝") {
-    return rect(left, y, thick, top - y + thick, fill) + rect(x, top, left - x + thick, thick, fill);
+
+  const quadrant = quadrantBlocks[ch];
+  if (quadrant) {
+    return quadrant
+      .map(([qx, qy]) => rect(x + qx * w / 2, y + qy * h / 2, w / 2, h / 2, fill))
+      .join("");
   }
   return "";
+}
+
+const quadrantBlocks = {
+  "▘": [[0, 0]],
+  "▝": [[1, 0]],
+  "▖": [[0, 1]],
+  "▗": [[1, 1]],
+  "▚": [[0, 0], [1, 1]],
+  "▞": [[1, 0], [0, 1]],
+  "▛": [[0, 0], [1, 0], [0, 1]],
+  "▜": [[0, 0], [1, 0], [1, 1]],
+  "▙": [[0, 0], [0, 1], [1, 1]],
+  "▟": [[1, 0], [0, 1], [1, 1]],
+};
+
+function isBoxDrawing(ch) {
+  const code = ch.codePointAt(0);
+  return code >= 0x2500 && code <= 0x257f;
 }
 
 function rect(x, y, w, h, fill, opacity = null) {
