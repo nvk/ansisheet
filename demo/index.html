@@ -44,12 +44,20 @@
         --ansisheet-padding: 18px;
         --ansisheet-radius: 6px;
         border: 1px solid #22302a;
+        align-self: start;
       }
 
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
         gap: 18px;
+        align-items: start;
+      }
+
+      .sample-title {
+        margin: 0 0 8px;
+        color: #48d8ff;
+        font: 700 14px/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       }
     </style>
   </head>
@@ -62,17 +70,22 @@
       </p>
 
       <section>
-        <ansisheet id="banner" title="ansisheet banner">█████╗ ███╗   ██╗███████╗██╗
-██╔══██╗████╗  ██║██╔════╝██║
-███████║██╔██╗ ██║███████╗██║
-██╔══██║██║╚██╗██║╚════██║██║
-██║  ██║██║ ╚████║███████║██║
-╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝</ansisheet>
+        <p class="sample-title">FIGlet source</p>
+        <ansisheet id="banner" title="ansisheet banner">              _    _            _
+ __ _ _ _  __(_)__| |_  ___ ___| |_
+/ _` | ' \(_-&lt; (_-&lt; ' \/ -_) -_)  _|
+\__,_|_||_/__/_/__/_||_\___\___|\__|</ansisheet>
       </section>
 
       <section class="grid">
-        <ansisheet id="colors" title="ANSI color sample" cols="34"></ansisheet>
-        <ansisheet id="anim" title="Clear screen ANSI animation" cols="28" rows="6" autoplay fps="3"></ansisheet>
+        <div>
+          <p class="sample-title">SGR color</p>
+          <ansisheet id="colors" title="ANSI color sample" cols="34"></ansisheet>
+        </div>
+        <div>
+          <p class="sample-title">clear screen frames</p>
+          <ansisheet id="anim" title="Clear screen ANSI animation" cols="28" rows="4" autoplay fps="3"></ansisheet>
+        </div>
       </section>
     </main>
 
