@@ -95,6 +95,16 @@ import { upgradeAnsisheets, parseAnsi, renderFrameToSvg } from "./src/ansisheet.
 upgradeAnsisheets(document);
 ```
 
+For live editors, keep a controller and update it directly instead of rewriting
+the element's child nodes:
+
+```js
+import { upgradeAnsisheet } from "./src/ansisheet.js";
+
+const sheet = upgradeAnsisheet(document.querySelector("ansisheet"));
+sheet.setText(textarea.value);
+```
+
 ## Static SVG Helper
 
 For static sites, CMS uploads, or no JS fallbacks, use the Python helper:
