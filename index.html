@@ -444,10 +444,12 @@
     </footer>
 
     <script type="module">
+      import { upgradeAnsisheet } from "./src/ansisheet.js";
+
       const source = document.querySelector("#source");
-      const live = document.querySelector("#live");
+      const live = upgradeAnsisheet(document.querySelector("#live"));
       const update = () => {
-        live.textContent = source.value;
+        live.setText(source.value);
       };
       source.addEventListener("input", update);
       update();

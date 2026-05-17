@@ -57,11 +57,13 @@ export class Ansisheet {
     this.loadQueued = false;
     this.rendering = false;
     this.initialText = element.textContent.trim();
+    this.inlineText = null;
   }
 
   queueLoad(readDom = false) {
     if (readDom) {
       this.initialText = this.element.textContent.trim();
+      this.inlineText = null;
     }
     if (this.loadQueued) {
       return;
@@ -71,6 +73,11 @@ export class Ansisheet {
       this.loadQueued = false;
       this.load();
     });
+  }
+
+  setText(text) {
+    this.inlineText = String(text ?? "");
+    this.queueLoad(false);
   }
 
   async load() {
@@ -96,6 +103,10 @@ export class Ansisheet {
   }
 
   async sourceText() {
+    if (this.inlineText !== null) {
+      return this.inlineText;
+    }
+
     const textAttr = this.element.getAttribute("text");
     if (textAttr !== null) {
       return textAttr;
