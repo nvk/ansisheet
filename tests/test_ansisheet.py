@@ -42,9 +42,9 @@ class AnsisheetTests(unittest.TestCase):
         result = parse_ansi("╔═╗")
         svg = render_svg(result["frame"])
 
-        self.assertIn(">╔</text>", svg)
-        self.assertIn('textLength="10"', svg)
-        self.assertNotIn('<rect x="0"', svg)
+        self.assertIn('shape-rendering="crispEdges"', svg)
+        self.assertIn('<rect x="3.8"', svg)
+        self.assertNotIn(">╔</text>", svg)
 
 
 if __name__ == "__main__":
