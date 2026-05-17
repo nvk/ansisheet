@@ -38,6 +38,14 @@ class AnsisheetTests(unittest.TestCase):
         self.assertIn('preserveAspectRatio="xMidYMid meet"', svg)
         self.assertIn("<rect", svg)
 
+    def test_box_drawing_uses_text_cell(self):
+        result = parse_ansi("╔═╗")
+        svg = render_svg(result["frame"])
+
+        self.assertIn(">╔</text>", svg)
+        self.assertIn('textLength="10"', svg)
+        self.assertNotIn('<rect x="0"', svg)
+
 
 if __name__ == "__main__":
     unittest.main()

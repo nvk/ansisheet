@@ -195,10 +195,11 @@ def render_svg(frame: list[list[Cell]], cell_w: int = 10, cell_h: int = 20) -> s
 def glyph(ch: str, x: int, y: int, w: int, h: int, fill: str) -> str:
     if ch == "█":
         return rect(x, y, w, h, fill)
+    cell_fit = f' textLength="{w:g}" lengthAdjust="spacingAndGlyphs"' if is_box_drawing(ch) else ""
     return (
-        f'<text x="{x + w / 2:g}" y="{y + h * 0.78:g}" fill="{html.escape(fill)}" '
+        f'<text x="{x + w / 2:g}" y="{y + h / 2:g}" fill="{html.escape(fill)}" '
         'font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" '
-        f'font-size="{h * 0.82:g}" text-anchor="middle">{html.escape(ch)}</text>'
+        f'font-size="{h * 0.86:g}" text-anchor="middle" dominant-baseline="central"{cell_fit}>{html.escape(ch)}</text>'
     )
 
 
@@ -223,6 +224,10 @@ def ansi_color(code: int, bold: bool) -> str:
 def parse_params(raw: str) -> list[int]:
     clean = re.sub(r"[?=>]", "", raw)
     return [int(part or "0") for part in clean.split(";") if part or clean]
+
+
+def is_box_drawing(ch: str) -> bool:
+    return bool(ch) and 0x2500 <= ord(ch[0]) <= 0x257F
 
 
 def clamp(value: int, low: int, high: int) -> int:
