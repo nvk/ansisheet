@@ -28,6 +28,15 @@ ansisheet keeps the terminal model:
 source text or ANSI -> rectangular cells -> responsive SVG
 ```
 
+## Related ASCII Projects
+
+- [ascii-banner](https://ascii-banner.com) generates FIGlet banners, ANSI
+  colors, borders, SVG, and animated media from text.
+- [asciihistory.com](https://asciihistory.com) is a visual history of ASCII,
+  FIGlet, BBS, hacker, and terminal banner art.
+- [ansisheet examples](https://ansisheet.com/examples/) show ascii-banner
+  output rendered as responsive web sheets.
+
 ## Features
 
 - Plain `<ansisheet>` markup.
