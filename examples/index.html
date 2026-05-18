@@ -169,12 +169,16 @@
       }
 
       .sheet ansisheet {
-        margin-inline: auto;
         --ansisheet-bg: transparent;
+      }
+
+      .example.full .sheet ansisheet {
+        inline-size: 100%;
       }
 
       .example:not(.full) .sheet ansisheet {
         inline-size: min(100%, 680px);
+        margin-inline: auto;
       }
 
       .example:not(.wide):not(.full) .sheet ansisheet {
