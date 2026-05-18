@@ -150,6 +150,7 @@ export class Ansisheet {
       cellWidth,
       cellHeight,
       background: "transparent",
+      color: this.element.getAttribute("color") ?? undefined,
       title: this.element.getAttribute("title") ?? undefined,
     });
     this.writeHtml(`<div class="ansisheet-wrap"><div class="ansisheet-frame">${svg}</div></div>`);
@@ -251,7 +252,7 @@ function observeAnsisheets() {
   });
   observer.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["src", "text", "cols", "rows", "cellwidth", "cellheight", "autoplay", "fps", "title"],
+    attributeFilter: ["src", "text", "cols", "rows", "cellwidth", "cellheight", "color", "autoplay", "fps", "title"],
     childList: true,
     characterData: true,
     subtree: true,
