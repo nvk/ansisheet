@@ -80,6 +80,7 @@ Play simple clear screen animations:
 | `rows` | Fixed terminal rows; also preserves frame height |
 | `cellwidth` | Internal SVG cell width, default `10` |
 | `cellheight` | Internal SVG cell height, default `20` |
+| `color` | Default foreground color when the source does not set ANSI color |
 | `autoplay` | Play multi frame ANSI |
 | `fps` | Animation frame rate |
 | `title` | SVG title for accessibility |
