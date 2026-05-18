@@ -43,6 +43,7 @@ source text or ANSI -> rectangular cells -> responsive SVG
 Load the browser module:
 
 ```html
+<link rel="stylesheet" href="./src/ansisheet-fallback.css">
 <script type="module" src="./src/ansisheet.js"></script>
 ```
 
@@ -69,6 +70,10 @@ Play simple clear screen animations:
 ```html
 <ansisheet src="/art/demo.ans" cols="80" rows="25" autoplay fps="12"></ansisheet>
 ```
+
+With JavaScript disabled, `ansisheet-fallback.css` renders inline source as a
+scrollable preformatted block. Plain ASCII and FIGlet banners remain readable;
+ANSI color, cursor movement, and animation still need the JavaScript renderer.
 
 ## Attributes
 

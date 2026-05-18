@@ -1,0 +1,20 @@
+ansisheet {
+  box-sizing: border-box;
+  display: block;
+  max-inline-size: 100%;
+  overflow: auto;
+  color: var(--ansisheet-fallback-color, currentColor);
+  font: var(--ansisheet-fallback-font, 14px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  white-space: pre;
+}
+
+html:not(.ansisheet-ready) ansisheet {
+  padding: var(--ansisheet-padding, 0);
+  border-radius: var(--ansisheet-radius, 0);
+  background: var(--ansisheet-bg, transparent);
+}
+
+html.ansisheet-ready ansisheet {
+  overflow: visible;
+  white-space: normal;
+}
