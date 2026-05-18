@@ -318,6 +318,8 @@ function escapeHtml(value) {
 }
 
 if (typeof document !== "undefined") {
+  document.documentElement.classList.add("ansisheet-ready");
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
       upgradeAnsisheets(document);
