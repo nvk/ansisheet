@@ -169,7 +169,16 @@
       }
 
       .sheet ansisheet {
+        margin-inline: auto;
         --ansisheet-bg: transparent;
+      }
+
+      .example:not(.full) .sheet ansisheet {
+        inline-size: min(100%, 680px);
+      }
+
+      .example:not(.wide):not(.full) .sheet ansisheet {
+        inline-size: min(100%, 420px);
       }
 
       footer {
